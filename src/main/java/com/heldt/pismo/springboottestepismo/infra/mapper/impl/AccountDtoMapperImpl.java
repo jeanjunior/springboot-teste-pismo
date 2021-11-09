@@ -15,6 +15,7 @@ public class AccountDtoMapperImpl implements AccountDtoMapper {
         return Account.builder()
                 .id(dto.getId())
                 .documentNumber(dto.getDocumentNumber())
+                .availableCreditLimit(dto.getAvailableCreditLimit())
                 .build();
     }
 
@@ -22,6 +23,7 @@ public class AccountDtoMapperImpl implements AccountDtoMapper {
     public Account toModel(AccountPostDTO dto) {
         return Account.builder()
                 .documentNumber(dto.getDocumentNumber())
+                .availableCreditLimit(dto.getAvailableCreditLimit())
                 .build();
     }
 
@@ -30,6 +32,7 @@ public class AccountDtoMapperImpl implements AccountDtoMapper {
         return AccountDTO.builder()
                 .id(model.getId())
                 .documentNumber(model.getDocumentNumber())
+                .availableCreditLimit(model.getAvailableCreditLimit())
                 .build();
     }
 

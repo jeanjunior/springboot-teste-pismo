@@ -8,10 +8,7 @@ import com.heldt.pismo.springboottestepismo.core.model.Account;
 import com.heldt.pismo.springboottestepismo.core.model.OperationType;
 import com.heldt.pismo.springboottestepismo.core.model.Transaction;
 import com.heldt.pismo.springboottestepismo.core.validation.Validation;
-import com.heldt.pismo.springboottestepismo.core.validation.impl.ValidationAccount;
-import com.heldt.pismo.springboottestepismo.core.validation.impl.ValidationAmount;
-import com.heldt.pismo.springboottestepismo.core.validation.impl.ValidationDocumentNumber;
-import com.heldt.pismo.springboottestepismo.core.validation.impl.ValidationOperation;
+import com.heldt.pismo.springboottestepismo.core.validation.impl.*;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +23,9 @@ public class ConfigBean {
 
     @Bean
     public List<Validation<Transaction>> validationTransaction(
-            ValidationOperation operation, ValidationAmount amount, ValidationAccount account
+            ValidationOperation operation, ValidationAmount amount, ValidationAccount account, ValidationCreditAccount creditAccount
     ) {
-        return List.of(operation, amount, account);
+        return List.of(operation, amount, account, creditAccount);
     }
 
     @Bean

@@ -14,6 +14,7 @@ public class AccountEntityMapperImpl implements AccountEntityMapper {
         return Account.builder()
                 .id(entity.getId())
                 .documentNumber(entity.getDocumentNumber())
+                .availableCreditLimit(entity.getAvailableCreditLimit())
                 .build();
     }
 
@@ -22,6 +23,7 @@ public class AccountEntityMapperImpl implements AccountEntityMapper {
         return AccountEntity.builder()
                 .id(model.getId())
                 .documentNumber(model.getDocumentNumber())
+                .availableCreditLimit(model.getAvailableCreditLimit())
                 .build();
     }
 

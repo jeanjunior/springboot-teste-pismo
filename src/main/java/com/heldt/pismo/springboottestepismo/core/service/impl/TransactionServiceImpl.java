@@ -2,10 +2,7 @@ package com.heldt.pismo.springboottestepismo.core.service.impl;
 
 import com.heldt.pismo.springboottestepismo.comum.exception.CustomParameterConstraintException;
 import com.heldt.pismo.springboottestepismo.core.model.Transaction;
-import com.heldt.pismo.springboottestepismo.core.port.CalculateAmountTransaction;
-import com.heldt.pismo.springboottestepismo.core.port.TransactionServiceRepository;
-import com.heldt.pismo.springboottestepismo.core.port.TransactionService;
-import com.heldt.pismo.springboottestepismo.core.port.ValidationTransactionService;
+import com.heldt.pismo.springboottestepismo.core.port.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,7 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionServiceRepository repository;
     private ValidationTransactionService validationTransactionService;
     private CalculateAmountTransaction calculate;
+    private AccountServiceRepository accountService;
 
     @Override
     public Optional<Transaction> findById(Long id) {
@@ -35,7 +33,22 @@ public class TransactionServiceImpl implements TransactionService {
         log.info("Fez as validações, vai chamar o repositório para salvar");
         transaction.setEventDate(LocalDateTime.now());
         calculate.calculate(transaction);
-        return repository.save(transaction);
+        var transactionSaved = repository.save(transaction);
+
+        // Atualiza o limite da conta
+        updateLimitCredit(transaction);
+
+        return transactionSaved;
+    }
+
+    private void updateLimitCredit(Transaction transaction) {
+        // Busca a account
+        var account = accountService.findById(transaction.getAccountId()).get();
+
+        // Soma/Subtrai o valor da transaction no limite
+        account.setAvailableCreditLimit(account.getAvailableCreditLimit().subtract(transaction.getAmount()));
+
+        accountService.save(account);
     }
 
 }
